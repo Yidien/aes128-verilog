@@ -1,0 +1,82 @@
+def f1(s):
+    fout = open(s, 'a')
+    for i in reversed(range(4)):
+        for j in reversed(range(4)):
+            a = (4 * i + j) * 8
+            b = (4 * j + i) * 8
+            fout.write('\tout[{:3d}:{:3d}] = in[{:3d}:{:3d}],\n'.format(a+7, a, b+7, b))
+
+    fout.write('endmodule')
+    fout.close()
+            
+
+
+def f2(s):
+    fout = open(s, 'a')
+    for i in reversed(range(4)):
+        for j in reversed(range(4)):
+            b = (4 * j) * 8
+            fout.write('$display("%h %h %h %h", out[{:3d}:{:3d}], out[{:3d}:{:3d}], out[{:3d}:{:3d}], out[{:3d}:{:3d}]);\n'.format(b+31, b+24,\
+                        b+23, b+16, b+15, b+8, b+7, b))
+
+    for i in reversed(range(4)):
+        for j in reversed(range(4)):
+            b = (4 * j) * 8
+            fout.write('$display("%h %h %h %h", in[{:3d}:{:3d}], in[{:3d}:{:3d}], in[{:3d}:{:3d}], in[{:3d}:{:3d}]);\n'.format(b+31, b+24,\
+                        b+23, b+16, b+15, b+8, b+7, b))
+            
+    fout.close()                   
+
+
+def f3(s):
+    fout = open(s, 'a')
+    i = 0
+    j = 0
+    
+    while (i < 1407):
+        fout.write('g{:d}(.out(gTmp[{:3d}:{:3d}]), .in(out[{:4d}:{:4d}]), .iflag(gFlag[{:2d}])),\n'.format(j+1, j*32+31, j*32, i+31, i, j+1))
+        j = j + 1
+        i = i + 128
+
+    fout.close()
+
+def f4(s):
+    fout = open(s,'a')
+
+    i = 0;
+    while (i < 10):
+        fout.write('\txwg{:d}(.out(out[{:4d}:{:4d}]), .in1(gTmp[{:3d}:{:3d}]), .in2(out[{:4d}:{:4d}])),\n'.format(i+1, (i+1)*128+127, (i+1)*128+96, i*32+31, i*32, i*128+127, i*128+96))
+        i = i + 1;
+                   
+    fout.close()
+
+    
+def f5(s):
+    fout = open(s,'a')
+
+    i = 0;
+    while (i < 10):
+        for j in reversed(range(3)):
+            fout.write('xor{:d}(.out(out[{:4d}:{:4d}]), .in1(out[{:4d}:{:4d}]), .in2(out[{:4d}:{:4d}])),\n'.format(i*3+3-j, 128*(i+1)+32*j+31, 128*(i+1)+32*j, 128*(i+1)+32*(j+1)+31, 128*(i+1)+32*(j+1), 128*i+32*j+31, 128*i+32*j))
+
+        i = i + 1;
+                   
+    fout.close()
+
+def f6(s):
+    fout = open(s, 'a')
+
+    for i in range(11):
+        for j in reversed(range(4)):
+            fout.write('$display("%h", out[{:4d}:{:4d}]);\n'.format(i*128+j*32+31, i*128+j*32))
+    
+    fout.close()
+
+def f7(s):
+    fout = open(s, 'a')
+    for i in range(11):
+        fout.write('KR{:d}(.out(K{:d}), .in(kExend[{:4d}:{:4d}])),\n'.format(i, i, i*128+127, i*128))
+
+    fout.close()
+    
+f7('control.v')                       
