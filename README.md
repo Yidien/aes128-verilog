@@ -1,4 +1,4 @@
-# aes128---verilog
+# aes128-verilog
 
 文件夹control：
     ./controlTst：为运行文件，显示打印明文、密钥、密文和解密后的内容
@@ -29,3 +29,7 @@
 文件夹shift：
     shiftL.v	：行移位
 
+注：
+*Tst.v文件为测试文件
+aes128模块为control.v文件
+controlTst为aes128测试程序
